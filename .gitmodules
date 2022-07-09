@@ -1,0 +1,6 @@
+[submodule "cart-api"]
+	path = cart-api
+	url = https://github.com/sebastillar/cart-api.git
+[submodule "notification-engine"]
+	path = notification-engine
+	url = https://github.com/sebastillar/notification-engine.git
