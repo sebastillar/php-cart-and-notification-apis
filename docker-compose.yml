@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  cart-api:
+    extends:
+      file: ./cart-api/docker-compose.yml
+      service: cart-api
+    depends_on:
+      - db
+    networks:
+      - cart-network
+    extra_hosts:
+      host.ip: ${HOST_IDE_IP}
+
+  notification-engine:
+    extends:
+      file: ./notification-engine/docker-compose.yml
+      service: notification-engine
+    depends_on:
+      - db
+    networks:
+      - cart-network
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3308:3306"
+    expose:
+      - 3308
+    volumes:
+      - mysql-platform-data:/var/lib/mysql
+      - ./cart-api/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init-cart-api.sql
+      - ./notification-engine/docker/mysql/init.sql:/docker-entrypoint-initdb.d/init-notification-engine.sql
+    networks:
+      - cart-network
+  
+networks:
+  cart-network:
+  
+volumes:
+  mysql-platform-data:
