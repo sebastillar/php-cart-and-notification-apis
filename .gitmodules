@@ -4,3 +4,6 @@
 [submodule "notification-engine"]
 	path = notification-engine
 	url = https://github.com/sebastillar/notification-engine.git
+[submodule "api-specification"]
+	path = api-specification
+	url = git@github.com:sebastillar/api-specification.git
